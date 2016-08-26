@@ -1,0 +1,20 @@
+{
+    "name": "usb-manager",
+    "version": "0.1.0",
+    "description": "Build usb dynamic device manager.",
+    "author": "Nanchao Inc.",
+    "main": "src/index.js",
+    "engines": {
+        "ruff": ">=1.4.0 <1.5.0"
+    },
+    "devDependencies": {
+        "eslint": "^2.11.1",
+        "ruff-standard": "^0.1.4",
+        "rvm": "^0.3.2"
+    },
+    "ruff": {
+        "devDependencies": {
+            "t": "^0.1.6"
+        }
+    }
+}
