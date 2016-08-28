@@ -1,18 +1,17 @@
-'use strict'
+'use strict';
 var usbDeviceManager = require('../src/index.js');
 var assert = require('assert');
 
 require('t');
 
 describe('Driver for sys-usb', function () {
-
     it('test should throw error if `attach` is not a function', function (done) {
         var foo;
         assert.throws(function () {
             usbDeviceManager({
                 attach: foo,
-                detach: function () {},
-                createDevice: function () {}
+                detach: function () { },
+                createDevice: function () { }
             });
         }, TypeError);
         done();
@@ -22,9 +21,9 @@ describe('Driver for sys-usb', function () {
         var foo;
         assert.throws(function () {
             usbDeviceManager({
-                attach: function () {},
+                attach: function () { },
                 detach: foo,
-                createDevice: function () {}
+                createDevice: function () { }
             });
         }, TypeError);
         done();
@@ -34,15 +33,15 @@ describe('Driver for sys-usb', function () {
         var foo;
         assert.throws(function () {
             usbDeviceManager({
-                attach: function () {},
-                detach: function () {},
+                attach: function () { },
+                detach: function () { },
                 createDevice: foo
             });
         }, TypeError);
         done();
     });
 
-     it('test should emit `mount` event when invoke `mountDevice` method and a device is created', function (done) {
+    it('test should emit `mount` event when invoke `mountDevice` method and a device is created', function (done) {
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
@@ -60,7 +59,7 @@ describe('Driver for sys-usb', function () {
         manager.mountDevice('/sys/devices/foo');
     });
 
-     it('test should not emit `mount` event when invoke `mountDevice` method and no device is created', function (done) {
+    it('test should not emit `mount` event when invoke `mountDevice` method and no device is created', function (done) {
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
@@ -79,7 +78,7 @@ describe('Driver for sys-usb', function () {
         manager.mountDevice('/sys/devices/foo');
     });
 
-     it('test should emit `unmount` event when `unmountDevice` method is invoked with an existed devPath', function (done) {
+    it('test should emit `unmount` event when `unmountDevice` method is invoked with an existed devPath', function (done) {
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
@@ -98,7 +97,7 @@ describe('Driver for sys-usb', function () {
         manager.unmountDevice('/sys/devices/foo');
     });
 
-     it('test should not emit `unmount` event when `unmountDevice` method is invoked with an unexisted devPath', function (done) {
+    it('test should not emit `unmount` event when `unmountDevice` method is invoked with an unexisted devPath', function (done) {
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
@@ -117,5 +116,4 @@ describe('Driver for sys-usb', function () {
         manager.mountDevice('/sys/devices/foo');
         manager.unmountDevice('/sys/devices/bar');
     });
-
 });
