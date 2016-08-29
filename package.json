@@ -8,6 +8,8 @@
         "ruff": ">=1.4.0 <1.5.0"
     },
     "scripts": {
+        "lint": "eslint *.js",
+        "pretest": "npm run lint",
         "test": "ruff ./test/test.js"
     },
     "devDependencies": {
