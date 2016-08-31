@@ -4,7 +4,7 @@ var assert = require('assert');
 
 require('t');
 
-describe('Driver for sys-usb', function () {
+describe('Test for usb-manager', function () {
     it('test should throw error if `attach` is not a function', function (done) {
         var foo;
         assert.throws(function () {
