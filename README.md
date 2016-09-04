@@ -38,11 +38,13 @@ This method is used to uninstall the specific usb device driver.
 
 - **callback:** No argument other than a possible error is given to the completion callback. It is optional.
 
-#### `createDevice(devPath)`
+#### `createDevice(devPath, options)`
 
 This method is used to check whether the `devPath` belongs to the specific usb device.
 
 It returns `null` when `devPath` does not belong to the specific usb device, otherwise returns one instance of the specific usb device.
+
+The `options` is the optional arguments used to construct the instance of the specific usb device.
 
 ### Extended Methods
 

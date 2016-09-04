@@ -9,23 +9,24 @@ function checkType(obj, type) {
     return obj;
 }
 
-function usbDeviceManager(options) {
-    function Constructor() {
+function usbDeviceManager(specificManager) {
+    function Constructor(options) {
         EventEmitter.call(this);
         this._devices = {};
+        this._options = options;
     }
 
     util.inherits(Constructor, EventEmitter);
 
     var prototype = Constructor.prototype;
 
-    prototype.attach = checkType(options.attach, 'function');
-    prototype.detach = checkType(options.detach, 'function');
-    prototype._createDevice = checkType(options.createDevice, 'function');
+    prototype.attach = checkType(specificManager.attach, 'function');
+    prototype.detach = checkType(specificManager.detach, 'function');
+    prototype._createDevice = checkType(specificManager.createDevice, 'function');
 
     prototype.mountDevice = function (devPath) {
         if (!this._devices[devPath]) {
-            var device = this._createDevice(devPath);
+            var device = this._createDevice(devPath, this._options);
             if (device) {
                 this._devices[devPath] = device;
                 this.emit('mount', device);
