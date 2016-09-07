@@ -46,15 +46,23 @@ It returns `null` when `devPath` does not belong to the specific usb device, oth
 
 The `options` is the optional arguments used to construct the instance of the specific usb device.
 
+#### `cleanupDevice(device)`
+
+This method is used to do some cleanup work when device is unplugged from the system.
+
+This method is optional.
+
+- **device:** The device object which is unplugged from the system.
+
 ### Extended Methods
 
 ### `mountDevice`
 
-This method is used to emit `mount` event when one specific usb device is pluged into the system.
+This method is used to emit `mount` event when one specific usb device is plugged into the system.
 
 ### `unmountDevice`
 
-This method is used to emit `unmount` event when one specific usb device is unpluged from the system.
+This method is used to emit `unmount` event when one specific usb device is unplugged from the system.
 
 ## Contributing
 
