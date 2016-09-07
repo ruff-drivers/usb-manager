@@ -1,6 +1,9 @@
 'use strict';
 var usbDeviceManager = require('../src/index.js');
 var assert = require('assert');
+var mock = require('ruff-mock');
+var anyMock = mock.anyMock;
+var verify = mock.verify;
 
 require('t');
 
@@ -117,14 +120,32 @@ describe('Test for usb-manager', function () {
         manager.unmountDevice('/sys/devices/bar');
     });
 
-    it('test should emit `mount` event when invoke `mountDevice` method and arguments of  ManagerConstructor is not undefined', function (done) {
+    it('test should emit `mount` event when invoke `mountDevice` method and arguments of ManagerConstructor is not undefined', function (done) {
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
             detach: function () {
             },
             createDevice: function (devPath, options) {
-                return options ? {} : null;
+                return options.foo ? {} : null;
+            }
+        });
+
+        var manager = new ManagerConstructor({ foo: true });
+        manager.on('mount', function () {
+            done();
+        });
+        manager.mountDevice('/sys/devices/foo');
+    });
+
+    it('test should not emit `mount` event when invoke `mountDevice` method and arguments of ManagerConstructor is undefined', function (done) {
+        var ManagerConstructor = usbDeviceManager({
+            attach: function () {
+            },
+            detach: function () {
+            },
+            createDevice: function (devPath, options) {
+                return options.foo ? {} : null;
             }
         });
 
@@ -132,25 +153,31 @@ describe('Test for usb-manager', function () {
         manager.on('mount', function () {
             done();
         });
+        setTimeout(done, 100);
         manager.mountDevice('/sys/devices/foo');
     });
 
-    it('test should not emit `mount` event when invoke `mountDevice` method and arguments of  ManagerConstructor is undefined', function (done) {
+    it('test should invoke `cleanupDevice` when invoke `unmountDevice` method', function (done) {
+        var foo = anyMock();
         var ManagerConstructor = usbDeviceManager({
             attach: function () {
             },
             detach: function () {
             },
-            createDevice: function (devPath, options) {
-                return options ? {} : null;
+            createDevice: function (devPath) {
+                return {};
+            },
+            cleanupDevice: function (device) {
+                return foo.bar(device);
             }
         });
 
         var manager = new ManagerConstructor();
-        manager.on('mount', function () {
+        manager.on('unmount', function () {
+            verify(foo).bar({});
             done();
         });
-        setTimeout(done, 100);
         manager.mountDevice('/sys/devices/foo');
+        manager.unmountDevice('/sys/devices/foo');
     });
 });

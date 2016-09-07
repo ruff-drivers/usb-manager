@@ -13,7 +13,7 @@ function usbDeviceManager(specificManager) {
     function Constructor(options) {
         EventEmitter.call(this);
         this._devices = {};
-        this._options = options;
+        this._options = options || {};
     }
 
     util.inherits(Constructor, EventEmitter);
@@ -23,6 +23,11 @@ function usbDeviceManager(specificManager) {
     prototype.attach = checkType(specificManager.attach, 'function');
     prototype.detach = checkType(specificManager.detach, 'function');
     prototype._createDevice = checkType(specificManager.createDevice, 'function');
+    if (specificManager.cleanupDevice) {
+        prototype._cleanupDevice = checkType(specificManager.cleanupDevice, 'function');
+    } else {
+        prototype._cleanupDevice = function () { };
+    }
 
     prototype.mountDevice = function (devPath) {
         if (!this._devices[devPath]) {
@@ -38,6 +43,7 @@ function usbDeviceManager(specificManager) {
         var device = this._devices[devPath];
         if (device) {
             delete this._devices[devPath];
+            this._cleanupDevice(device);
             this.emit('unmount', device);
         }
     };
