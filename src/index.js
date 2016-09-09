@@ -9,6 +9,18 @@ function checkType(obj, type) {
     return obj;
 }
 
+function callEach(obj, func) {
+    var keys = Object.keys(obj);
+    if (keys.length) {
+        keys.forEach(function (key) {
+            var value = obj[key];
+            if (value) {
+                func(value);
+            }
+        });
+    }
+}
+
 function usbDeviceManager(specificManager) {
     function Constructor(options) {
         EventEmitter.call(this);
@@ -21,12 +33,17 @@ function usbDeviceManager(specificManager) {
     var prototype = Constructor.prototype;
 
     prototype.attach = checkType(specificManager.attach, 'function');
-    prototype.detach = checkType(specificManager.detach, 'function');
+    var specificManagerDetach = checkType(specificManager.detach, 'function');
     prototype._createDevice = checkType(specificManager.createDevice, 'function');
-    if (specificManager.cleanupDevice) {
+    if (specificManager.cleanupDevice !== undefined) {
         prototype._cleanupDevice = checkType(specificManager.cleanupDevice, 'function');
+        prototype.detach = function () {
+            callEach(this._devices, this._cleanupDevice.bind(this));
+            specificManagerDetach.apply(this, arguments);
+        };
     } else {
         prototype._cleanupDevice = function () { };
+        prototype.detach = specificManagerDetach;
     }
 
     prototype.mountDevice = function (devPath) {
