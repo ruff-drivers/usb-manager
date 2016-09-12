@@ -42,7 +42,7 @@ function usbDeviceManager(specificManager) {
             specificManagerDetach.apply(this, arguments);
         };
     } else {
-        prototype._cleanupDevice = function () { };
+        prototype._cleanupDevice = function () {};
         prototype.detach = specificManagerDetach;
     }
 
