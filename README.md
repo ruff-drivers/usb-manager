@@ -4,7 +4,7 @@ This module is used to build USB dynamic device manager for Ruff.
 
 ## Supported Engines
 
-* Ruff: >=1.4.0 <1.7.0
+* Ruff: >=1.4.0 <2.0.0
 
 ## Defining USB Device Manager
 
